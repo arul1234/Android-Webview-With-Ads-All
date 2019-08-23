@@ -28,7 +28,7 @@ private InterstitialAd interstitial;
 protected void onCreate(Bundle savedInstanceState) {
 
 
-AdRequest adRequest = new AdRequest.Builder().build();
+      AdRequest adRequest = new AdRequest.Builder().build();
 
                 // Prepare the Interstitial Ad
                 interstitial = new InterstitialAd(MainActivity.this);
