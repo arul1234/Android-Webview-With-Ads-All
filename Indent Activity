@@ -1,0 +1,12 @@
+------------------------
+Samples
+-----------------------
+
+
+public void callFirstActivity(View view){  
+        Intent i = new Intent(getApplicationContext(), FirstActivity.class);  
+        startActivity(i);  
+    } 
+
+
+android:onClick="callFirstActivity" 
