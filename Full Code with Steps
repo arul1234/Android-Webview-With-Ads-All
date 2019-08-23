@@ -1,0 +1,177 @@
+---Sample Ads Code---
+
+
+<string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+<string name="admob_interstitial_id">ca-app-pub-3940256099942544/1033173712</string>
+
+-----------------------------------------
+
+
+
+Step:1
+
+AndroidManifest.xml
+
+<uses-permission android:name="android.permission.INTERNET"></uses-permission>
+
+
+Step:2
+
+public class MainActivity extends AppCompatActivity {
+
+private static final String TAG = "MainActivity";
+AdView mAdView;
+InterstitialAd mInterstitialAd;
+private InterstitialAd interstitial;
+
+
+protected void onCreate(Bundle savedInstanceState) {
+
+
+AdRequest adRequest = new AdRequest.Builder().build();
+
+                // Prepare the Interstitial Ad
+                interstitial = new InterstitialAd(MainActivity.this);
+        // Insert the Ad Unit ID
+                interstitial.setAdUnitId(getString(R.string.admob_interstitial_id));
+
+                interstitial.loadAd(adRequest);
+        // Prepare an Interstitial Ad Listener
+                interstitial.setAdListener(new AdListener() {
+                    public void onAdLoaded() {
+        // Call displayInterstitial() function
+                        displayInterstitial();
+                    }
+                });
+
+        mAdView = (AdView) findViewById(R.id.adView);
+        adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
+
+
+}
+
+public void displayInterstitial() {
+// If Ads are loaded, show Interstitial else show nothing.
+        if (interstitial.isLoaded()) {
+            interstitial.show();
+        }
+    }
+
+
+}
+
+
+Step:3
+
+Xml File Add This:
+
+<RelativeLayout
+
+----------------------------------
+xmlns:ads="http://schemas.android.com/apk/res-auto"
+-----------------------------------
+
+>
+    <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id">
+    </com.google.android.gms.ads.AdView>
+ 
+</RelativeLayout>
+
+
+}
+
+
+
+
+
+------------Web View with PulltoRefresh----------------
+
+<uses-permission android:name="android.permission.INTERNET"></uses-permission>
+
+--------.java file-------
+
+WebView webView;
+SwipeRefreshLayout swipe;
+
+-----------------
+-----------------
+
+
+    swipe = (SwipeRefreshLayout) findViewById(R.id.swipe);
+        swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+
+                LoadWeb();
+            }
+        });
+
+        LoadWeb();
+    }
+
+
+    public void LoadWeb(){
+
+        webView = (WebView) findViewById(R.id.webView);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setAppCacheEnabled(true);
+        webView.loadUrl("https://siteurl here");
+        swipe.setRefreshing(true);
+        webView.setWebViewClient(new WebViewClient(){
+
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+
+                webView.loadUrl("file:///android_asset/error.html");
+            }
+
+            public  void  onPageFinished(WebView view, String url){
+
+                //Hide the SwipeReefreshLayout
+
+                swipe.setRefreshing(false);
+            }
+
+        });
+    }
+
+    @Override
+    public void onBackPressed(){
+
+        if (webView.canGoBack()){
+            webView.goBack();
+        }else {
+            finish();
+        }
+    }
+
+
+
+--------------- XML File ------------------------
+
+<RelativeLayout>
+
+<android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <WebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:layout_editor_absoluteY="8dp"
+            tools:layout_editor_absoluteX="8dp" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+</Relativelayout>
+
+
+-----------------------------------------------------
